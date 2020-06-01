@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+    <link href="./css/login.css" rel="stylesheet" type="text/css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+</head>
+<body>
+      <div id="preloader" class="preloader">
+        <div class="spinner-grow text-dark" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+
+      <!-- 侧栏菜单 -->
+      <div class="navmenu">
+          <ul class="list top">
+
+          </ul>
+          <ul class="list">
+              <li><a href="javascript:void(0);">Login</a></li>
+              <li><a href="./register.html">Register</a></li>
+              <li><a href="./index.html">Home</a></li>
+<!--              <li><a href="#">Control</a></li>-->
+              <li><a href="#">Music</a></li>
+          </ul>
+      </div>
+      <!-- 头部导航 -->
+      <header class="header">
+          <div class="menu">
+              <div class="menu_icon "><img src="pic/icon-hamburger.svg"></div>
+          </div>
+      </header>
+
+      <div id="login-button">
+        <img src="https://dqcgrsy5v35b9.cloudfront.net/cruiseplanner/assets/img/icons/login-w-icon.png">
+      </div>
+      <div id="container">
+        <h1>Ready</h1>
+        <span class="close-btn">
+          <img src="https://cdn4.iconfinder.com/data/icons/miu/22/circle_close_delete_-128.png"></img>
+        </span>
+      
+        <form id="loginForm" action="#" method="post" >
+          <input type="text" name="username" placeholder="Username">
+          <input type="password" name="password" placeholder="Password">
+          <img src="checkCode" class="checkCode" height="32px" alt="" onclick="changeCheckCode(this)"><input type="text" name="checkCode" class="enterCode" placeholder="Enter Code">
+          <script type="text/javascript">
+                //图片点击事件
+                function changeCheckCode(img) {
+                    img.src="checkCode?"+new Date().getTime();
+                }
+          </script>
+          <!--<a href="#">Let's Study</a>-->
+          <input type="submit" class="submit" value="Let's Study">
+          <div id="remember-container">
+            <input type="checkbox" id="checkbox-2-1" class="checkbox" checked="checked"/>
+            <span id="remember">Remember me</span>
+            <span id="read">Read Me</span>
+          </div>
+      </form>
+      </div>
+      
+      <!-- Read Me -->
+      <div id="read-container">
+         <h1>Fishei</h1>
+        <span class="close-btn">
+          <img src="https://cdn4.iconfinder.com/data/icons/miu/22/circle_close_delete_-128.png"></img>
+        </span>
+      
+        <form>
+          <p class="readMe">It's a magical world!<br/> Please protect your privacy! </p>
+          <a href="#" class="blue-btn" id="agree">I Have Read</a>
+      </form>
+      </div>
+
+      <!-- 全屏变暗 -->
+      <div class="changeBg"></div>
+
+      <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+      <script src="./js/login.js"></script>
+      <script>
+          $(function () {
+              //给登录按钮添加单击事件
+              $("#loginForm").submit(function () {
+                  $.post("/user/login",$(this).serialize(),function (data) {
+                      if(data.flag){
+                          //登录成功
+                          alert(data.errorMsg);
+                          location.href = "index.html"
+                      }else{
+                          //登录失败
+                          alert(data.errorMsg)
+                      };
+                  });
+                  //取消FROM表单提交
+                  return false;
+              });
+
+          });
+      </script>
+</body>
+</html>

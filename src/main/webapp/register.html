@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/register.css">
+</head>
+<body>
+
+	<div id="preloader" class="preloader">
+		<div class="spinner-grow text-dark" role="status">
+			<span class="sr-only">Loading...</span>
+		</div>
+	</div>
+	
+	<div class="wrap">
+		<div class="bg"></div>
+	</div>
+
+	<!-- 侧栏菜单 -->
+	<div class="navmenu">
+		<ul class="list top">
+
+		</ul>
+		<ul class="list">
+			<li><a href="javascript:void(0);">Register</a></li>
+			<li><a href="./login.html">Login</a></li>
+			<li><a href="./index.html">Home</a></li>
+			<!--<li><a href="#">Control</a></li>-->
+			<li><a href="#">Music</a></li>
+		</ul>
+	</div>
+	<!-- 头部导航 -->
+	<header class="header">
+		<div class="menu">
+			<div class="menu_icon "><img src="pic/icon-hamburger.svg"></div>
+		</div>
+	</header>
+
+	<div id="register-button" class="register-button">
+		<img id="enter"  src="./pic/register.png">
+		</img>
+	</div>
+	
+	<div id="container">
+        <img id="logo" src="./pic/logo.png">
+        <span class="close-btn">
+          <img src="./pic/delete.png"></img>
+        </span>
+      
+        <form id="registerForm" action="#" method="post">
+			<img class="icon_register" src="./pic/username.png" alt="用户名" title="用户名"/><span id="isUsefulUsername"></span><input type="text" name="username" id="username" placeholder="Username" required>
+			<img class="icon_register" src="./pic/password.png" alt="密码" title="密码"/><span id="isUsefulPW"></span><input type="password" name="password" id="password" placeholder="Password" required>
+			<img class="icon_register" src="./pic/password.png" alt="请再次输入密码" title="请再次输入密码"/><span id="isRealUsefulPW"></span><input type="password" name="isPassword" id="isPassword" placeholder="Enter your password again" required>
+			<img class="icon_register" src="./pic/email.png" alt="邮箱" title="邮箱"/><span id="isUsefulEmail"></span><input type="email" name="email" id="email" placeholder="Email" required>
+			<img class="icon_register" src="./pic/code.png" alt="验证码" title="验证码"/><img src="checkCode" class="checkCode" height="32px" alt="" onclick="changeCheckCode(this)"><input type="text" name="checkCode" class="enterCode" placeholder="Enter Code" required>
+			<script type="text/javascript">
+				//图片点击事件
+				function changeCheckCode(img) {
+					img.src="checkCode?"+new Date().getTime();
+				}
+			</script>
+		<!--<a href="#">Register</a>-->
+          	<input type="submit" class="submit" value="Register">
+	  </form>
+	  <h1>Welcome To Fishei! Best Wishes! </h1>
+	  <a id="howUse" href=""><p>How To Use?</p></a>
+	</div>
+	<div id="audio_bg">
+		<audio  id="bgMusic"  autoplay loop ></audio>
+	</div>
+
+	<!-- 全屏变暗 -->
+	<div class="changeBg"></div>
+
+	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+	<script src="./js/register.js"  type="text/javascript"></script>
+	<script type="text/javascript">
+		
+
+		$(function(){
+			//加载
+			$(window).on('load', function() {
+				$('#preloader').addClass("loaded");
+			});
+			//插入音乐
+			$(".register-button").mouseover(function(){
+				$("#bgMusic").prop("src",".\\music\\Pink_Champagne.mp3");
+			});
+			//点击移除音乐移除
+			$(".register-button").click(function(){
+				$("#bgMusic").remove();
+				
+			});
+			// 鼠标离开,移除相关图片属性,实现转动效果
+			$(".register-button").mouseleave(function(){
+				$("#bgMusic").removeAttr("src");
+				$("#enter").addClass("enter");
+			});
+
+			var trueHtml = "<img class='img-checked' height='20px' width='20px' src='.\\pic\\true.png' >";
+            var falseHtml = "<img class='img-checked' height='20px' width='20px' src='.\\pic\\false.png'>"
+			//表单校验
+			function checkUsername() {
+                var username = $("#username").val();
+                var ck_username = /^\w{6,18}$/;
+                var flag = ck_username.test(username);
+
+				if (!flag){
+					$("#isUsefulUsername").html(falseHtml);
+					$("#username").css("border","1px solid red");
+				}else{
+					$("#isUsefulUsername").html(trueHtml);
+					$("#username").css("border","");
+				}
+				return flag;
+
+			}
+
+			function checkPassword() {
+                var password = $("#password").val();
+				var ck_password = /^\w{6,18}$/;
+				var flag = ck_password.test(password);
+				if(!flag){
+					$("#isUsefulPW").html(falseHtml);
+                    $("#password").css("border","1px solid red");
+				}else{
+					$("#isUsefulPW").html(trueHtml);
+                    $("#password").css("border","");
+				}
+				return flag;
+			}
+
+			function checkAgainPassword(){
+			    var flag = false;
+                var isPassword = $("#isPassword").val();
+                if($("#password").val() == isPassword && isPassword!="" && checkPassword()){
+                    $("#isRealUsefulPW").html(trueHtml);
+                    $("#isPassword").css("border","");
+                    flag = true;
+                }else{
+                    $("#isRealUsefulPW").html(falseHtml);
+                    $("#isUsefulPW").html(falseHtml);
+                    $("#isPassword").css("border","1px solid red");
+                }
+                return flag;
+            }
+
+            function checkEmail(){
+                var email = $("#email").val();
+                var flag = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email);
+                if(!flag){
+                    $("#isUsefulEmail").html(falseHtml);
+                    $("#email").css("border","1px solid red");
+                }else{
+                    $("#isUsefulEmail").html(trueHtml);
+                    $("#email").css("border","");
+                }
+                return flag;
+            }
+            $(function () {
+				$("#registerForm").submit(function () {
+					if (checkUsername() && checkPassword() && checkEmail() && checkAgainPassword()){
+						//校验通过，发送ajax请求提交表单数据
+						$.post("/user/register",$(this).serialize(),function (data) {
+
+							 if(data.flag){
+							 	alert("注册成功！")
+								 location.href="login.html";
+							 }else{
+								 alert(data.errorMsg);
+							 }
+						});
+					}
+					return false;
+				});
+
+				$("#username").blur(checkUsername);
+				$("#password").blur(checkPassword);
+				$("#isPassword").blur(checkAgainPassword);
+				$("#email").blur(checkEmail);
+			});
+
+		});
+		moveBackground();
+	</script>
+</body>
+</html>

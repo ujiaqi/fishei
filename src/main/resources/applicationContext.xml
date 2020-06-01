@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       https://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--开启注解的扫描，只处理service层和dao层，controller层不需要处理-->
+    <context:component-scan base-package="cn.fishei">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--将所有业务类注入到Spring中，可以通过配置或注解实现 @Service("bookService") @Autowired-->
+    <!--<bean id="BookServiceImpl" class="com.yjq.ssm.service.BookServiceImpl">
+        <property name="bookMapper" ref="bookMapper"/>
+    </bean>-->
+
+    <!--Spring整合Mybatis框架-->
+
+    <!--关联数据库配置文件-->
+    <context:property-placeholder location="classpath:database.properties"/>
+
+    <!--配置连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+
+        <!--c3p0私有属性-->
+        <property name="maxPoolSize" value="20"/>
+        <property name="minPoolSize" value="10"/>
+        <!--关闭连接后不自动commit-->
+        <property name="autoCommitOnClose" value="false"/>
+        <!--连接超时-->
+        <property name="checkoutTimeout" value="10000"/>
+        <!--连接失败重试次数-->
+        <property name="acquireRetryAttempts" value="2"/>
+    </bean>
+
+    <!--配置sqlSessionFactory工厂-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!--扫描dao层Mapper配置文件-->
+        <property name="mapperLocations" value="classpath:cn/fishei/dao/*.xml"/>
+        <!--添加实体类的别名-->
+        <property name="typeAliasesPackage" value="cn.fishei.bean"/>
+    </bean>
+
+    <!--配置dao接口扫描包，动态实现了到接口可以注入到Spring容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" id="mapperScannerConfigurer">
+        <!--要扫描的dao包-->
+        <property name="basePackage" value="cn.fishei.dao"/>
+    </bean>
+
+</beans>

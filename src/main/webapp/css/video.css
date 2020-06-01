@@ -1,0 +1,9 @@
+.video_con, .video{
+    visibility:visible;
+    width: 500px;
+    height: auto;
+    object-fit: cover;
+    max-width:100%;
+    margin: auto;
+}
+

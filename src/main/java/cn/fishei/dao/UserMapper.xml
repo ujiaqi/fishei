@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.fishei.dao.UserMapper">
+    <select id="findUsername" resultType="user">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+
+    <insert id="saveAccount" parameterType="user">
+        INSERT  INTO user (username, password, email, status, uuid) VALUES (#{username}, #{password}, #{email}, #{status}, #{uuid})
+    </insert>
+
+    <select id="findUuid" resultType="user">
+        SELECT * FROM user WHERE uuid = #{uuid}
+    </select>
+
+    <update id="updateStatus" parameterType="user">
+        UPDATE user SET status = 'Y' WHERE uid = #{uid}
+    </update>
+
+    <select id="login" resultType="user" parameterType="user">
+        SELECT * FROM user  WHERE username = #{username} AND password = #{password}
+    </select>
+
+    <update id="updateInfo" parameterType="string">
+        UPDATE user SET password = #{password}
+        WHERE username = #{username}
+    </update>
+</mapper>

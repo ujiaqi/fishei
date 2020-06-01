@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.fishei.dao.TlikeMapper">
+    <select id="ifLike" parameterType="_int" resultType="tlike">
+        SELECT * FROM tlike WHERE uid = #{uid} AND tid = #{tid}
+    </select>
+
+    <insert id="addLike" parameterType="tlike">
+        INSERT INTO tlike (uid, tid, date) values (#{uid}, #{tid}, #{date})
+    </insert>
+
+    <delete id="removeLike" parameterType="_int">
+        DELETE FROM tlike WHERE #{uid} AND tid = #{tid}
+    </delete>
+
+    <select id="queryAll" resultType="_int">
+        SELECT COUNT(*) FROM ted
+    </select>
+
+    <select id="queryDetail" parameterType="_int" resultType="map">
+        SELECT * FROM ted WHERE tid IN (#{one}, #{two})
+    </select>
+
+    <select id="allLike" resultType="ted" parameterType="_int">
+        SELECT * FROM ted WHERE tid IN( SELECT tid FROM tlike WHERE uid = #{uid})
+    </select>
+</mapper>
